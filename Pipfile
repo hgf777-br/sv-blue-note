@@ -6,8 +6,10 @@ name = "pypi"
 [packages]
 django = "*"
 gunicorn = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
+pytest-django = "*"
 
 [requires]
 python_version = "3.10"
