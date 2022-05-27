@@ -1,49 +1,55 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="sistema para controle de manutenção do Together">
-    <meta name="author" content="Henrique Faria">
-    <title>Together</title>
+{% extends 'base/base.html' %}
+{% block content %}
+    <table id="manutencao" class="table table-striped dt-responsive nowrap" aria-label="Tabela de manutenção" style="width:100%">
+        <thead>
+            <tr>
+                <th>data</th>
+                <th>setor</th>
+                <th>fornecedor</th>
+                <th>serviço</th>
+                <th>descrição</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>2022-06-19</td>
+                <td>motor</td>
+                <td>volvo</td>
+                <td>revisão</td>
+                <td>completa com troca de óleo</td>
+            </tr>
+            <tr>
+                <td>2022-07-15</td>
+                <td>casco</td>
+                <td>Lauro Silva</td>
+                <td>pintura</td>
+                <td>tinta cooper coat</td>
+            </tr>
+            <tr>
+                <td>2022-06-28</td>
+                <td>vela</td>
+                <td>Serginho</td>
+                <td>reparo</td>
+                <td>troca da capa UV da genoa</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock content %}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-</head>
-<body>
-    <header class="container d-flex flex-wrap justify-content-between py-2 mb-3 border-bottom">
-        <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none" href="/"><h2>Together</h2></a>
-        <ul class="nav mb-2 mb-lg-0">
-            <li class="nav-item dropdown">
-                <a class="nav-link link-dark dropdown-toggle" href="#" id="maintenance" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Manuteção
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Novo Serviço</a></li>
-                    <li><a class="dropdown-item" href="#">Novo Fornecedor</a></li>
-                </ul>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link link-dark dropdown-toggle" href="#" id="profile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Henrique
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Perfil</a></li>
-                    <li><a class="dropdown-item" href="#">Logs</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Logout</a></li>
-                </ul>
-            </li>
-        </ul>
-    </header>
-    <main class="container">
-        <div class="row">
-            <div class="col">data</div>
-            <div class="col">setor</div>
-            <div class="col">fornecedor</div>
-            <div class="col">serviço</div>
-        </div>
-    </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-</body>
-</html>
+{% block extra_javascript %}
+<script type="text/javascript" class="init">
+    $(document).ready(function () {
+        $("#manutencao").DataTable({
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.12.1/i18n/pt-BR.json"
+            },
+            columnDefs: [
+                {
+                    targets: 0,
+                    render: DataTable.render.datetime('D MMM YYYY'),
+                },
+            ],
+        });
+    });
+</script>
+{% endblock extra_javascript %}
