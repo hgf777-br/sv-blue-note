@@ -1,0 +1,70 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="mb-2">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="{{ message.tags }} mb-2 py-1">
+                    {{ message }}
+                </div>     
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div>
+        <a href="{% url 'base:register_user' %}" class="btn btn-outline-success btn-sm mb-3">
+            Incluir
+        </a>
+    </div>
+    <table id="list_user" class="table table-striped dt-responsive nowrap" aria-label="Tabela de usuários" style="width:100%">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Data do Cadastro</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.first_name}}</td>
+                    <td>{{ user.email }}</td>
+
+                    <td>{{ user.date_joined.date }}</td>
+                    <td>
+                        <div class="text-center">
+                            <a href="{% url 'base:edit_user' user.id %}"
+                            class="btn btn-outline-primary"
+                            id="edit-{{ user.id }}"
+                            >
+                            <em class="bi-person-check"></em>
+                            </a>
+                            <a href="{% url 'base:delete_user' user.id %}"
+                            class="btn btn-outline-danger"
+                            id="delete-{{ user.id }}"
+                            >
+                            <em class="bi-person-dash"></em>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}
+
+{% block extra_javascript %}
+<script type="text/javascript" class="init">
+    $(document).ready(function () {
+        $("#list_user").DataTable({
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.12.1/i18n/pt-BR.json"
+            },
+            columnDefs: [
+                { responsivePriority: 1, targets: 0 },
+                { responsivePriority: 2, targets: -1 },
+                { orderable: false, targets: -1 }
+            ],
+        });
+    });
+</script>
+{% endblock extra_javascript %}
