@@ -19,6 +19,7 @@
             <tr>
                 <th>Nome</th>
                 <th>Email</th>
+                <th>Nível</th>
                 <th>Data do Cadastro</th>
                 <th></th>
             </tr>
@@ -28,7 +29,7 @@
                 <tr>
                     <td>{{ user.first_name}}</td>
                     <td>{{ user.email }}</td>
-
+                    <td>{% if user.level == 0 %}admin{% else %}normal{% endif %}</td>
                     <td>{{ user.date_joined.date }}</td>
                     <td>
                         <div class="text-center">
