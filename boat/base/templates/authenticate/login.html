@@ -29,7 +29,7 @@
                 </div>
                 <form method="post" action="">
                     {% csrf_token %}
-                    <div class="mb-2">
+                    <div class="mb-4">
                         {% if messages %}
                             {% for message in messages %}
                                 <div class="{{ message.tags }} mb-2 py-1">

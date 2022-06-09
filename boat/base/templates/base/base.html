@@ -42,13 +42,26 @@
         </a>
         <ul class="nav align-items-center">
             <li class="nav-item dropdown">
-                <a class="nav-link link-dark dropdown-toggle" href="#" id="maintenance" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link link-dark dropdown-toggle" href="#" id="menu_manutencao" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Manutenção
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li {% if user.level > 0 %}class="d-none"{% endif %}><a class="dropdown-item" href="#">painel</a></li>
+                    <li {% if user.level > 0 %}class="d-none"{% endif %}><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">realizadas</a></li>
+                    <li><a class="dropdown-item" href="#">a fazer</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link link-dark dropdown-toggle" href="#" id="menu_cadastro" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Cadastro
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="{% url 'base:list_user' %}">Usuário</a></li>
-                    <li><a class="dropdown-item" href="#">Novo Serviço</a></li>
-                    <li><a class="dropdown-item" href="#">Novo Fornecedor</a></li>
+                    <li {% if user.level > 0 %}class="d-none"{% endif %}><a class="dropdown-item" href="{% url 'base:list_user' %}">usuário</a></li>
+                    <li {% if user.level > 0 %}class="d-none"{% endif %}><a class="dropdown-item" href="#">setor</a></li>
+                    <li {% if user.level > 0 %}class="d-none"{% endif %}><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">serviço</a></li>
+                    <li><a class="dropdown-item" href="#">fornecedor</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
