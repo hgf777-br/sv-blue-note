@@ -22,4 +22,5 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     path('', include('boat.base.urls')),
     path('manutencao/', include('boat.manutencao.urls')),
+    path('cadastro/', include('boat.cadastro.urls')),
 ]

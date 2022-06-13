@@ -1,4 +1,11 @@
 {% extends 'base/base.html' %}
+{% block extra_head %}   
+    <!-- DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.bootstrap5.min.css">
+    <!-- DT Responsive -->    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css">
+{% endblock extra_head %}    
 {% block content %}
     <table id="manutencao" class="table table-striped dt-responsive nowrap" aria-label="Tabela de manutenção" style="width:100%">
         <thead>
@@ -37,6 +44,14 @@
 {% endblock content %}
 
 {% block extra_javascript %}
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+<!-- DT Responsive -->    
+<script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.3.0/js/responsive.bootstrap5.min.js"></script>
+
 <script type="text/javascript" class="init">
     $(document).ready(function () {
         $("#manutencao").DataTable({

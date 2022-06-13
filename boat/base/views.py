@@ -62,8 +62,8 @@ def register_user(request):
                 'password1': password1,
                 'password2': password2,
             })
-    else:
-        return render(request, 'authenticate/register_user.html', {})
+
+    return render(request, 'authenticate/register_user.html', {})
         
 def validate_user_email( email ):
     try:
@@ -107,8 +107,8 @@ def edit_user(request, user_id):
                 'first_name': first_name,
                 'email': email,
             })
-    else:
-        user_edit = User.objects.get(id=user_id)
-        return render(request, 'authenticate/edit_user.html', {
-            'user_edit': user_edit,
-        })
+    
+    user_edit = User.objects.get(id=user_id)
+    return render(request, 'authenticate/edit_user.html', {
+        'user_edit': user_edit,
+    })

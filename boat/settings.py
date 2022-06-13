@@ -52,6 +52,7 @@ INTERNAL_IPS = config('INTERNAL_IPS', cast=Csv(), default='127.0.0.1')
 INSTALLED_APPS = [
     'boat.base',
     'boat.manutencao',
+    'boat.cadastro',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

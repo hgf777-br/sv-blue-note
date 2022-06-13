@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+        <div class="row">
+            <div class="col col-md-9 col-lg-7 col-xl-6 mx-auto">
+                <div class="row my-3 align-items-center">
+                    <div class="col-4">
+                        <img class="img-fluid" src={% static "images/Together-logo.png" %} alt="Together" height="300" />
+                    </div>
+                    <div class="col-8">
+                        <h1 class="">Edição de Setor</h1>
+                    </div>
+                </div>
+                <form method="post" action="{% url 'cadastro:setor_edit' setor_edit.id %}">
+                    {% csrf_token %}
+                    <div class="mb-2">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger mb-1 py-1">{{ message }}</div>     
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control fs-4" name="name" id="name" maxlength="16" value="{{ setor_edit.name }}" required />
+                        <label for="name">Nome do Setor</label>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col">
+                            <button class="w-100 btn btn-lg btn-success" type="submit">
+                                Alterar
+                            </button>
+                        </div>
+                        <div class="col">
+                            <a href="{% url 'cadastro:setor' %}" class="w-100 btn btn-lg btn-danger">
+                                Cancelar
+                            </a>
+                        </div> 
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+{% endblock content %}
+
+{% block extra_javascript %}
+
+{% endblock extra_javascript %}

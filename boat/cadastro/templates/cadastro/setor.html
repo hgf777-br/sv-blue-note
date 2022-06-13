@@ -1,11 +1,11 @@
 {% extends 'base/base.html' %}
-{% block extra_head %}   
+{% block extra_head %}
     <!-- DataTables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.bootstrap5.min.css">
     <!-- DT Responsive -->    
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css">
-{% endblock extra_head %}    
+{% endblock extra_head %}
 {% block content %}
     <div class="mb-2">
         {% if messages %}
@@ -17,40 +17,34 @@
         {% endif %}
     </div>
     <div>
-        <a href="{% url 'base:register_user' %}" class="btn btn-outline-success btn-sm mb-3">
+        <a href="{% url 'cadastro:setor_insert' %}" class="btn btn-outline-success btn-sm mb-3">
             Incluir
         </a>
     </div>
-    <table id="list_user" class="table table-striped dt-responsive nowrap" aria-label="Tabela de usuários" style="width:100%">
+    <table id="list_setor" class="table table-striped dt-responsive nowrap" aria-label="Tabela de setores" style="width:100%">
         <thead>
             <tr>
                 <th>Nome</th>
-                <th>Email</th>
-                <th>Nível</th>
-                <th>Data do Cadastro</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            {% for user in users %}
+            {% for setor in setores %}
                 <tr>
-                    <td>{{ user.first_name}}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{% if user.level == 0 %}admin{% else %}normal{% endif %}</td>
-                    <td>{{ user.date_joined.date }}</td>
+                    <td>{{ setor.name }}</td>
                     <td>
                         <div class="text-center">
-                            <a href="{% url 'base:edit_user' user.id %}"
-                            class="btn btn-outline-primary"
-                            id="edit-{{ user.id }}"
+                            <a href="{% url 'cadastro:setor_edit' setor.id %}"
+                            class="btn btn-outline-primary py-1"
+                            id="edit-{{ setor.id }}"
                             >
-                            <em class="bi-person-check"></em>
+                            <em class="bi-pencil"></em>
                             </a>
-                            <a href="{% url 'base:delete_user' user.id %}"
-                            class="btn btn-outline-danger"
-                            id="delete-{{ user.id }}"
+                            <a href="{% url 'cadastro:setor_delete' setor.id %}"
+                            class="btn btn-outline-danger py-1"
+                            id="delete-{{ setor.id }}"
                             >
-                            <em class="bi-person-dash"></em>
+                            <em class="bi-trash"></em>
                             </a>
                         </div>
                     </td>
@@ -65,13 +59,23 @@
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
 <!-- DT Responsive -->    
 <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.3.0/js/responsive.bootstrap5.min.js"></script>
 
 <script type="text/javascript" class="init">
     $(document).ready(function () {
-        $("#list_user").DataTable({
+        $("#list_setor").DataTable({
+            // dom: 'lrftip',
+            buttons: [
+                {
+                    text: 'incluir',
+                    action: function ( e, dt, node, config ) {
+                        alert( 'Button activated' );
+                    }
+                }
+            ],
             language: {
                 url: "//cdn.datatables.net/plug-ins/1.12.1/i18n/pt-BR.json"
             },
