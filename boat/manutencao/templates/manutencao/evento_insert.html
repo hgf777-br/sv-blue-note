@@ -1,0 +1,96 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+        <div class="row">
+            <div class="col col-md-9 col-lg-7 col-xl-6 mx-auto">
+                <div class="row my-3 align-items-center">
+                    <div class="col-4">
+                        <img class="img-fluid" src={% static "images/Together-logo.png" %} alt="Together" height="300" />
+                    </div>
+                    <div class="col-8">
+                        <h1 class="">Entrada de Evento</h1>
+                    </div>
+                </div>
+                <form method="post" action="{% url 'manutencao:evento_insert' %}">
+                    {% csrf_token %}
+                    <div class="mb-2">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger mb-1 py-1">{{ message }}</div>     
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="date" class="form-control" name="data" id="data" value="{{ evento.data }}" autofocus required />
+                                <label for="data">Data da Manutenção</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-2">
+                                <select class="form-select" name="setor" id="setor" aria-label="Setor">
+                                    {% for setor in setores %}
+                                    <option value="{{ setor.id }}">{{ setor.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="setor">Nome do Setor</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <select class="form-select" name="servico" id="servico" aria-label="Serviço">
+                            {% for servico in servicos %}
+                                <option value="{{ servico.id }}">{{ servico.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="sevico">Nome do Serviço</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <select class="form-select" name="fornecedor" id="fornecedor" aria-label="Fornecedor">
+                            {% for fornecedor in fornecedores %}
+                                <option value="{{ fornecedor.id }}">{{ fornecedor.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="fornecedor">Nome do Fornecedor</label>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="number" class="form-control" name="valor" id="valor" maxlength="32" value="{{ valor }}" required />
+                                <label for="valor">Valor do Serviço</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="realizada" value="{{ realizada }}" id="realizada">
+                                <label class="form-check-label" for="realizada">Realizada</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <textarea class="form-control" name="descricao" id="descricao" rows="3" value="{{ descricao }}" required></textarea>
+                        <label class="form-label" for="descricao">Descrição</label>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col">
+                            <button class="w-100 btn btn-lg btn-success" type="submit">
+                                Cadastrar
+                            </button>
+                        </div>
+                        <div class="col">
+                            <a href="{% url 'cadastro:setor' %}" class="w-100 btn btn-lg btn-danger">
+                                Cancelar
+                            </a>
+                        </div> 
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+{% endblock content %}
+
+{% block extra_javascript %}
+{% endblock extra_javascript %}

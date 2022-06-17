@@ -1,9 +1,23 @@
-from django.http import HttpResponse
+from calendar import month
+from datetime import date, timedelta
+from dateutil.relativedelta import relativedelta
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from boat.cadastro.models import Setor
+from django.urls import reverse
+from boat.cadastro.models import Fornecedor, Servico, Setor
 from django.utils.html import escape
+
+PERIODS = {
+    'Pontual': 0,
+    'Anual': 12,
+    'Trimestral': 3,
+    'Semestral': 6,
+    'A cada 2 anos': 24,
+    'A cada 3 anos': 36,
+    'A cada 5 anos': 60,
+    'A cada 10 anos': 120,
+    }
 
 @login_required
 def setor(request):
@@ -70,3 +84,217 @@ def setor_delete(request, setor_id):
         'titulo': 'Setor',
         'setor_del': setor_del,
     })
+
+@login_required
+def servico(request):
+    servicos = Servico.objects.all().select_related('setor')
+    return render(request, 'cadastro/servico.html', {
+        'titulo': 'Serviço',
+        'servicos': servicos
+    })
+    
+@login_required
+def servico_insert(request):
+    if request.method == 'POST':
+        servicos = Servico.objects.all()
+        names = [servico.name for servico in servicos]
+        name = escape(request.POST['name'])
+        setor = Setor.objects.get(id=request.POST['setor'])
+        service_period = request.POST['service_period']
+        next_service = escape(request.POST['next_service'])
+        today = date.today()
+        if next_service == '':
+            next_service = today + relativedelta(months=PERIODS[service_period])
+        else:
+            next_service = date.fromisoformat(request.POST['next_service'])
+        if name in names:
+            messages.error(request, 'Este serviço já existe')
+            return redirect('cadastro:servico_insert')
+        elif next_service < today:
+            messages.error(request, 'A próxima data deve ser posterior a hoje')
+            return redirect('cadastro:servico_insert')
+        else:
+            servico = Servico(name=name, service_period=service_period, next_service=next_service, setor=setor)
+            servico.save()
+            next_page = request.GET.get('next', reverse('base:home'))
+            return redirect(next_page)
+    else:
+        setores = Setor.objects.all()
+        return render(request, 'cadastro/servico_insert.html', {
+            'titulo': 'Serviço',
+            'setores': setores,
+            'periods': PERIODS,
+        })
+        
+@login_required
+def servico_edit(request, servico_id):
+    if request.method == 'POST':
+        servico_edit = Servico.objects.get(id=servico_id)
+        servicos = Servico.objects.all()
+        names = [servico.name for servico in servicos]
+        name = escape(request.POST['name'])
+        setor = Setor.objects.get(id=request.POST['setor'])
+        service_period = request.POST['service_period']
+        next_service = escape(request.POST['next_service'])
+        today = date.today()
+        if next_service == '':
+            next_service = today + relativedelta(months=PERIODS[service_period])
+        else:
+            next_service = date.fromisoformat(request.POST['next_service'])
+        if name != servico_edit.name and name in names:
+            messages.error(request, 'Este serviço já existe')
+            setores = Setor.objects.all()
+            return render(request, 'cadastro/servico_edit.html', {
+                'titulo': 'Serviço',
+                'servico_edit': servico_edit,
+                'setores': setores,
+                'periods': PERIODS,
+            })
+        elif next_service < today:
+            messages.error(request, 'A próxima data deve ser posterior a hoje')
+            setores = Setor.objects.all()
+            return render(request, 'cadastro/servico_edit.html', {
+                'titulo': 'Serviço',
+                'servico_edit': servico_edit,
+                'setores': setores,
+                'periods': PERIODS,
+            })
+        else:
+            setor_edit = Servico.objects.get(id=servico_id)
+            setor_edit.name = name
+            setor_edit.service_period = service_period
+            setor_edit.next_service = next_service
+            setor_edit.setor = setor
+            setor_edit.save()
+            messages.success(request, f'Serviço { setor_edit.name } alterado no sistema')
+            return redirect('cadastro:servico')
+            
+    servico_edit = Servico.objects.get(id=servico_id)
+    setores = Setor.objects.all()
+    return render(request, 'cadastro/servico_edit.html', {
+        'titulo': 'Serviço',
+        'servico_edit': servico_edit,
+        'setores': setores,
+        'periods': PERIODS,
+    })
+
+@login_required
+def servico_delete(request, servico_id):
+    if request.method == 'POST':
+        servico_del = Servico.objects.get(id=servico_id)
+        servico_del.delete()
+        messages.success(request, f'Serviço { servico_del.name } foi excluído do sistema')
+        return redirect('cadastro:servico')
+            
+    servico_del = Servico.objects.get(id=servico_id)
+    return render(request, 'cadastro/servico_delete.html', {
+        'titulo': 'Serviço',
+        'servico_del': servico_del,
+    })
+    
+@login_required
+def fornecedor(request):
+    fornecedores = Fornecedor.objects.all()
+    return render(request, 'cadastro/fornecedor.html', {
+        'titulo': 'Fornecedor',
+        'fornecedores': fornecedores
+    })
+
+@login_required
+def fornecedor_insert(request):
+    if request.method == 'POST':
+        servicos = Servico.objects.all()
+        names = [servico.name for servico in servicos]
+        name = escape(request.POST['name'])
+        setor = Setor.objects.get(id=request.POST['setor'])
+        service_period = request.POST['service_period']
+        next_service = escape(request.POST['next_service'])
+        today = date.today()
+        if next_service == '':
+            next_service = today + relativedelta(months=PERIODS[service_period])
+        else:
+            next_service = date.fromisoformat(request.POST['next_service'])
+        if name in names:
+            messages.error(request, 'Este serviço já existe')
+            return redirect('cadastro:servico_insert')
+        elif next_service < today:
+            messages.error(request, 'A próxima data deve ser posterior a hoje')
+            return redirect('cadastro:servico_insert')
+        else:
+            servico = Servico(name=name, service_period=service_period, next_service=next_service, setor=setor)
+            servico.save()
+            return redirect('cadastro:servico')
+    else:
+        setores = Setor.objects.all()
+        return render(request, 'cadastro/servico_insert.html', {
+            'titulo': 'Serviço',
+            'setores': setores,
+            'periods': PERIODS,
+        })
+        
+@login_required
+def fornecedor_edit(request, servico_id):
+    if request.method == 'POST':
+        servico_edit = Servico.objects.get(id=servico_id)
+        servicos = Servico.objects.all()
+        names = [servico.name for servico in servicos]
+        name = escape(request.POST['name'])
+        setor = Setor.objects.get(id=request.POST['setor'])
+        service_period = request.POST['service_period']
+        next_service = escape(request.POST['next_service'])
+        today = date.today()
+        if next_service == '':
+            next_service = today + relativedelta(months=PERIODS[service_period])
+        else:
+            next_service = date.fromisoformat(request.POST['next_service'])
+        if name != servico_edit.name and name in names:
+            messages.error(request, 'Este serviço já existe')
+            setores = Setor.objects.all()
+            return render(request, 'cadastro/servico_edit.html', {
+                'titulo': 'Serviço',
+                'servico_edit': servico_edit,
+                'setores': setores,
+                'periods': PERIODS,
+            })
+        elif next_service < today:
+            messages.error(request, 'A próxima data deve ser posterior a hoje')
+            setores = Setor.objects.all()
+            return render(request, 'cadastro/servico_edit.html', {
+                'titulo': 'Serviço',
+                'servico_edit': servico_edit,
+                'setores': setores,
+                'periods': PERIODS,
+            })
+        else:
+            setor_edit = Servico.objects.get(id=servico_id)
+            setor_edit.name = name
+            setor_edit.service_period = service_period
+            setor_edit.next_service = next_service
+            setor_edit.setor = setor
+            setor_edit.save()
+            messages.success(request, f'Serviço { setor_edit.name } alterado no sistema')
+            return redirect('cadastro:servico')
+            
+    servico_edit = Servico.objects.get(id=servico_id)
+    setores = Setor.objects.all()
+    return render(request, 'cadastro/servico_edit.html', {
+        'titulo': 'Serviço',
+        'servico_edit': servico_edit,
+        'setores': setores,
+        'periods': PERIODS,
+    })
+
+@login_required
+def fornecedor_delete(request, servico_id):
+    if request.method == 'POST':
+        servico_del = Servico.objects.get(id=servico_id)
+        servico_del.delete()
+        messages.success(request, f'Serviço { servico_del.name } foi excluído do sistema')
+        return redirect('cadastro:servico')
+            
+    servico_del = Servico.objects.get(id=servico_id)
+    return render(request, 'cadastro/servico_delete.html', {
+        'titulo': 'Serviço',
+        'servico_del': servico_del,
+    })
+    

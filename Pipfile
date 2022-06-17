@@ -13,6 +13,8 @@ dj-database-url = "*"
 django-s3-folder-storage = "*"
 collectfast = "*"
 psycopg2-binary = "*"
+ipython = "*"
+django-extensions = "*"
 
 [dev-packages]
 pytest-django = "*"

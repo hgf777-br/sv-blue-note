@@ -65,8 +65,8 @@
                     <li {% if user.level > 0 %}class="d-none"{% endif %}><a class="dropdown-item" href="{% url 'base:list_user' %}">usuário</a></li>
                     <li {% if user.level > 0 %}class="d-none"{% endif %}><a class="dropdown-item" href="{% url 'cadastro:setor' %}">setor</a></li>
                     <li {% if user.level > 0 %}class="d-none"{% endif %}><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">serviço</a></li>
-                    <li><a class="dropdown-item" href="#">fornecedor</a></li>
+                    <li><a class="dropdown-item" href="{% url 'cadastro:servico' %}">serviço</a></li>
+                    <li><a class="dropdown-item" href="{% url 'cadastro:fornecedor' %}">fornecedor</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown">

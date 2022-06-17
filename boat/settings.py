@@ -95,6 +95,7 @@ WSGI_APPLICATION = 'boat.wsgi.application'
 # Django Debug toolbar configuration
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
+    INSTALLED_APPS.append('django_extensions')
     MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 # Database

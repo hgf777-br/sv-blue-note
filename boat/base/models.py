@@ -42,7 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         Email and password are required. Others fields are optional.
     """
-    first_name = models.CharField(_('first name'), max_length=32, blank=True)
+    first_name = models.CharField(_('first name'), max_length=16, blank=True)
     email = models.EmailField(_('email address'), unique=True)
     level = models.PositiveSmallIntegerField(_('user level'), default=1)
     is_staff = models.BooleanField(

@@ -1,0 +1,69 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+        <div class="row">
+            <div class="col col-md-9 col-lg-7 col-xl-6 mx-auto">
+                <div class="row my-3 align-items-center">
+                    <div class="col-4">
+                        <img class="img-fluid" src={% static "images/Together-logo.png" %} alt="Together" height="300" />
+                    </div>
+                    <div class="col-8">
+                        <h1 class="">Cadastro de Serviço</h1>
+                    </div>
+                </div>
+                <form method="post" action="{% url 'cadastro:servico_insert' %}">
+                    {% csrf_token %}
+                    <div class="mb-2">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger mb-1 py-1">{{ message }}</div>     
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" name="name" id="name" maxlength="32" value="{{ name }}" autofocus required />
+                        <label for="name">Nome do Serviço</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <select class="form-select" name="setor" id="setor" aria-label="Setor">
+                            {% for setor in setores %}
+                                <option value="{{ setor.id }}">{{ setor.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="setor">Nome do Setor</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <select class="form-select" name="service_period" id="service_period" aria-label="Período">
+                            {% for period in periods %}
+                                <option value="{{ period }}">{{ period }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="period">Período de recorrência</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="date" class="form-control" name="next_service" id="next_service" value="{{ service.next_service }}" />
+                        <label for="date">Data do próximo serviço</label>
+                        <small class="text-muted ms-2">Se não preenchido o sistema irá usar a data de hoje + o período estabelecido</small>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col">
+                            <button class="w-100 btn btn-lg btn-success" type="submit">
+                                Cadastrar
+                            </button>
+                        </div>
+                        <div class="col">
+                            <a href="{% url 'cadastro:setor' %}" class="w-100 btn btn-lg btn-danger">
+                                Cancelar
+                            </a>
+                        </div> 
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+{% endblock content %}
+
+{% block extra_javascript %}
+{% endblock extra_javascript %}

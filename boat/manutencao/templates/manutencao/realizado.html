@@ -1,11 +1,11 @@
 {% extends 'base/base.html' %}
-{% block extra_head %}   
+{% block extra_head %}
     <!-- DataTables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.bootstrap5.min.css">
     <!-- DT Responsive -->    
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css">
-{% endblock extra_head %}    
+{% endblock extra_head %}
 {% block content %}
     <div class="mb-2">
         {% if messages %}
@@ -17,40 +17,44 @@
         {% endif %}
     </div>
     <div>
-        <a href="{% url 'base:register_user' %}?next={{ request.path }}" class="btn btn-outline-success btn-sm mb-3">
+        <a href="{% url 'manutencao:evento_insert' %}?next={{ request.path }}" class="btn btn-outline-success btn-sm mb-3">
             Incluir
         </a>
     </div>
-    <table id="list_user" class="table table-striped dt-responsive nowrap" aria-label="Tabela de usuários" style="width:100%">
+    <table id="manutencao" class="table table-striped dt-responsive nowrap" aria-label="Tabela de manutenção" style="width:100%">
         <thead>
             <tr>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Nível</th>
-                <th>Data do Cadastro</th>
+                <th>data</th>
+                <th>setor</th>
+                <th>serviço</th>
+                <th>fornecedor</th>
+                <th>valor</th>
+                <th>descrição</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            {% for user in users %}
+            {% for evento in eventos %}
                 <tr>
-                    <td>{{ user.first_name}}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{% if user.level == 0 %}admin{% else %}normal{% endif %}</td>
-                    <td>{{ user.date_joined.date }}</td>
+                    <td>{{ evento.date | date:'d m y' }}</td>
+                    <td>{{ evento.setor }}</td>
+                    <td>{{ evento.servico }}</td>
+                    <td>{{ evento.fornecedor }}</td>
+                    <td>R$ {{ evento.valor }}</td>
+                    <td>{{ evento.descricao }}</td>
                     <td>
                         <div class="text-center">
-                            <a href="{% url 'base:edit_user' user.id %}"
-                            class="btn btn-outline-primary"
-                            id="edit-{{ user.id }}"
+                            <a href="{% url 'manutencao:evento_edit' evento.id %}"
+                            class="btn btn-outline-primary py-0"
+                            id="edit-{{evento.id }}"
                             >
-                            <em class="bi-person-check"></em>
+                            <em class="bi-pencil"></em>
                             </a>
-                            <a href="{% url 'base:delete_user' user.id %}"
-                            class="btn btn-outline-danger"
-                            id="delete-{{ user.id }}"
+                            <a href="{% url 'manutencao:evento_delete' evento.id %}"
+                            class="btn btn-outline-danger py-0"
+                            id="delete-{{ evento.id }}"
                             >
-                            <em class="bi-person-dash"></em>
+                            <em class="bi-trash"></em>
                             </a>
                         </div>
                     </td>
@@ -65,20 +69,21 @@
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
 <!-- DT Responsive -->    
 <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.3.0/js/responsive.bootstrap5.min.js"></script>
 
 <script type="text/javascript" class="init">
     $(document).ready(function () {
-        $("#list_user").DataTable({
+        $("#manutencao").DataTable({
             language: {
                 url: "//cdn.datatables.net/plug-ins/1.12.1/i18n/pt-BR.json"
             },
             columnDefs: [
                 { responsivePriority: 1, targets: 0 },
                 { responsivePriority: 2, targets: -1 },
-                { orderable: false, targets: -1 }
+                { orderable: false, targets: -1 },
             ],
         });
     });

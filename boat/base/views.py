@@ -4,12 +4,13 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.contrib import messages
+from django.urls import reverse
 from boat.base.models import User
 from django.utils.html import escape
 
 def home(request):
     if request.user.is_authenticated:
-        return redirect('manutencao:lista')
+        return redirect('manutencao:realizado')
     else:    
         return redirect('base:login')
 
@@ -27,7 +28,7 @@ def login_user(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('manutencao:lista')
+            return redirect('manutencao:realizado')
         else:
             messages.success(request, 'Login incorreto. Tente de novo.')
             return redirect('base:login')
@@ -50,7 +51,8 @@ def register_user(request):
             user = User(first_name=first_name, email=email, password=password1)
             user.set_password(password1)
             user.save()
-            return redirect('base:list_user')
+            next_page = request.GET.get('next', reverse('base:home'))
+            return redirect(next_page)
         else:
             if not validate_user_email(email):
                 messages.error(request, 'Entre com um email válido')
