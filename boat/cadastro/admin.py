@@ -7,7 +7,7 @@ class SetorAdmin(admin.ModelAdmin):
 
 @admin.register(Servico)
 class ServicoAdmin(admin.ModelAdmin):
-    list_display = ('name', 'setor', 'service_period', 'next_service')
+    list_display = ('name', 'setor', 'period')
     search_fields = ('name',)
     
 @admin.register(Fornecedor)

@@ -11,7 +11,7 @@
                         <h1 class="">Cadastro de Serviço</h1>
                     </div>
                 </div>
-                <form method="post" action="{% url 'cadastro:servico_insert' %}">
+                <form method="post" action="{% url 'cadastro:servico_insert' %}?next_page={{ next_page }}">
                     {% csrf_token %}
                     <div class="mb-2">
                         {% if messages %}
@@ -34,18 +34,20 @@
                         <label for="setor">Nome do Setor</label>
                     </div>
                     <div class="form-floating mb-2">
-                        <select class="form-select" name="service_period" id="service_period" aria-label="Período">
-                            {% for period in periods %}
+                        <select class="form-select" name="period" id="period" aria-label="Período">
+                            {% for period in servico.display_choices %}
                                 <option value="{{ period }}">{{ period }}</option>
                             {% endfor %}
                         </select>
                         <label for="period">Período de recorrência</label>
                     </div>
-                    <div class="form-floating mb-2">
-                        <input type="date" class="form-control" name="next_service" id="next_service" value="{{ service.next_service }}" />
-                        <label for="date">Data do próximo serviço</label>
-                        <small class="text-muted ms-2">Se não preenchido o sistema irá usar a data de hoje + o período estabelecido</small>
-                    </div>
+                    <!--
+                        <div class="form-floating mb-2">
+                            <input type="date" class="form-control" name="next_service" id="next_service" value="{{ service.next_service }}" />
+                            <label for="date">Data do próximo serviço</label>
+                            <small class="text-muted ms-2">Se não preenchido o sistema irá usar a data de hoje + o período estabelecido</small>
+                        </div>
+                    -->
 
                     <div class="row mt-4">
                         <div class="col">
@@ -54,7 +56,7 @@
                             </button>
                         </div>
                         <div class="col">
-                            <a href="{% url 'cadastro:setor' %}" class="w-100 btn btn-lg btn-danger">
+                            <a href="{% url 'cadastro:servico' %}" class="w-100 btn btn-lg btn-danger">
                                 Cancelar
                             </a>
                         </div> 

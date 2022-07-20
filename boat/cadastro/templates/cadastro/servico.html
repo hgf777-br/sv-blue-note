@@ -17,7 +17,7 @@
         {% endif %}
     </div>
     <div>
-        <a href="{% url 'cadastro:servico_insert' %}?next={{ request.path }}" class="btn btn-outline-success btn-sm mb-3">
+        <a href="{% url 'cadastro:servico_insert' %}?next_page={{ request.path }}" class="btn btn-outline-success btn-sm mb-3">
             Incluir
         </a>
     </div>
@@ -27,7 +27,6 @@
                 <th>Nome</th>
                 <th>Setor</th>
                 <th>Periodo</th>
-                <th>Data da Proxíma</th>
                 <th></th>
             </tr>
         </thead>
@@ -36,8 +35,7 @@
                 <tr>
                     <td>{{ servico.name }}</td>
                     <td>{{ servico.setor }}</td>
-                    <td>{{ servico.service_period }}</td>
-                    <td>{{ servico.next_service }}</td>
+                    <td>{{ servico.get_period_display }}</td>
                     <td>
                         <div class="text-center">
                             <a href="{% url 'cadastro:servico_edit' servico.id %}"

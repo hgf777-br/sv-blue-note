@@ -15,6 +15,7 @@ collectfast = "*"
 psycopg2-binary = "*"
 ipython = "*"
 django-extensions = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 pytest-django = "*"

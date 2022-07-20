@@ -7,17 +7,8 @@ from django.contrib import messages
 from django.urls import reverse
 from boat.cadastro.models import Fornecedor, Servico, Setor
 from django.utils.html import escape
+from boat.cadastro.forms import ServicoForm
 
-PERIODS = {
-    'Pontual': 0,
-    'Anual': 12,
-    'Trimestral': 3,
-    'Semestral': 6,
-    'A cada 2 anos': 24,
-    'A cada 3 anos': 36,
-    'A cada 5 anos': 60,
-    'A cada 10 anos': 120,
-    }
 
 @login_required
 def setor(request):
@@ -92,38 +83,41 @@ def servico(request):
         'titulo': 'Serviço',
         'servicos': servicos
     })
-    
+
 @login_required
 def servico_insert(request):
+    servico = Servico()
     if request.method == 'POST':
         servicos = Servico.objects.all()
         names = [servico.name for servico in servicos]
         name = escape(request.POST['name'])
         setor = Setor.objects.get(id=request.POST['setor'])
-        service_period = request.POST['service_period']
-        next_service = escape(request.POST['next_service'])
-        today = date.today()
-        if next_service == '':
-            next_service = today + relativedelta(months=PERIODS[service_period])
-        else:
-            next_service = date.fromisoformat(request.POST['next_service'])
+        period = servico.get_choice(request.POST['period'])
+        # next_service = escape(request.POST['next_service'])
+        # today = date.today()
+        # if next_service == '':
+        #     next_service = today + relativedelta(months=PERIODS[service_period])
+        # else:
+        #     next_service = date.fromisoformat(request.POST['next_service'])
         if name in names:
             messages.error(request, 'Este serviço já existe')
             return redirect('cadastro:servico_insert')
-        elif next_service < today:
-            messages.error(request, 'A próxima data deve ser posterior a hoje')
-            return redirect('cadastro:servico_insert')
+        # elif next_service < today:
+        #     messages.error(request, 'A próxima data deve ser posterior a hoje')
+        #     return redirect('cadastro:servico_insert')
         else:
-            servico = Servico(name=name, service_period=service_period, next_service=next_service, setor=setor)
+            servico = Servico(name=name, period=period, setor=setor)
             servico.save()
-            next_page = request.GET.get('next', reverse('base:home'))
+            next_page = request.GET.get('next_page')
             return redirect(next_page)
     else:
         setores = Setor.objects.all()
+        next_page = request.GET.get('next_page')
         return render(request, 'cadastro/servico_insert.html', {
             'titulo': 'Serviço',
+            'next_page': next_page,
+            'servico': servico,
             'setores': setores,
-            'periods': PERIODS,
         })
         
 @login_required
