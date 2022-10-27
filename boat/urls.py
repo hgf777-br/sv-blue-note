@@ -23,4 +23,5 @@ urlpatterns = [
     path('', include('boat.base.urls')),
     path('manutencao/', include('boat.manutencao.urls')),
     path('cadastro/', include('boat.cadastro.urls')),
+    path('api/', include('boat.api.urls')),
 ]

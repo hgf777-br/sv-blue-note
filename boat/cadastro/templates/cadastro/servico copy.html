@@ -31,7 +31,30 @@
             </tr>
         </thead>
         <tbody>
-        </tbody>
+            <!--{% for servico in servicos %}
+                <tr>
+                    <td>{{ servico.name }}</td>
+                    <td>{{ servico.setor }}</td>
+                    <td>{{ servico.get_period_display }}</td>
+                    <td>
+                        <div class="text-center">
+                            <a href="{% url 'cadastro:servico_edit' servico.id %}"
+                            class="btn btn-outline-primary py-1"
+                            id="edit-{{ servico.id }}"
+                            >
+                            <em class="bi-pencil"></em>
+                            </a>
+                            <a href="{% url 'cadastro:servico_delete' servico.id %}"
+                            class="btn btn-outline-danger py-1"
+                            id="delete-{{ servico.id }}"
+                            >
+                            <em class="bi-trash"></em>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>-->
     </table>
 {% endblock content %}
 
@@ -78,7 +101,6 @@
                 { responsivePriority: 1, targets: 0 },
                 { responsivePriority: 2, targets: -1 },
                 { orderable: false, targets: -1 },
-                { width: 10%, targets:-1}
             ],
         });
     });

@@ -122,6 +122,16 @@ def servico_insert(request):
         
 @login_required
 def servico_edit(request, servico_id):
+    PERIODS = [
+        (0, 'pontual'),
+        (3, 'trimestral'),
+        (6, 'semestral'),
+        (12, 'anual'),
+        (24, 'a cada 2 anos'),
+        (36, 'a cada 3 anos'),
+        (60, 'a cada 5 anos'),
+        (120, 'a cada 10 anos'),
+    ]
     if request.method == 'POST':
         servico_edit = Servico.objects.get(id=servico_id)
         servicos = Servico.objects.all()
