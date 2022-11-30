@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'boat.base',
     'boat.manutencao',
     'boat.cadastro',
-    'widget_tweaks',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
