@@ -11,23 +11,35 @@
                         <h1 class="">Edição de Usuário</h1>
                     </div>
                 </div>
-                <form method="post" action="{% url 'base:edit_user' user_edit.id %}">
+                <form method="post" action="{% url 'base:edit_user' user.id %}">
                     {% csrf_token %}
                     <div class="mb-2">
                         {% if messages %}
                             {% for message in messages %}
-                                <div class="alert alert-danger mb-1 py-1">{{ message }}</div>     
+                                <div class="alert alert-danger mb-1 py-1">{{ message }}</div>
                             {% endfor %}
                         {% endif %}
                     </div>
 
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control" name="first_name" id="name" maxlength="16" value="{{ user_edit.first_name } autofocus}" required />
+                        <input type="text" class="form-control" name="first_name" id="name" maxlength="16" value="{{ user.first_name }}" autofocus required />
                         <label for="name">Primeiro Nome</label>
                     </div>
                     <div class="form-floating mb-2">
-                        <input type="email" class="form-control" name="email" id="email" maxlength="254" value="{{ user_edit.email }}" required />
+                        <input type="email" class="form-control" name="email" id="email" maxlength="254" value="{{ user.email }}" required />
                         <label for="email">Email</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="0" name="level" id="level_admin" {% if user.level == 0 %}checked{% endif %} >
+                        <label class="form-check-label" for="level_admin">
+                            administrador
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="1" name="level" id="level_operador" {% if user.level == 1 %}checked{% endif %}>
+                        <label class="form-check-label" for="level_operador">
+                            operador
+                        </label>
                     </div>
 
                     <div class="row mt-4">
@@ -40,9 +52,9 @@
                             <a href="{% url 'base:list_user' %}" class="w-100 btn btn-lg btn-danger">
                                 Cancelar
                             </a>
-                        </div> 
+                        </div>
                     </div>
-                    
+
                 </form>
             </div>
         </div>

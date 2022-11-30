@@ -5,7 +5,7 @@
             <div class="col col-md-9 col-lg-7 col-xl-6 mx-auto">
                 <div class="row my-3 align-items-center">
                     <div class="col-4">
-                        <img class="img-fluid" src={% static "images/Together-logo.png" %} alt="Together" height="300" />
+                        <img class="img-fluid" src={% static "images/bluenote-logo.png" %} alt="Together" height="300" />
                     </div>
                     <div class="col-8">
                         <h1 class="">Cadastro de Usuário</h1>
@@ -16,7 +16,7 @@
                     <div class="mb-2">
                         {% if messages %}
                             {% for message in messages %}
-                                <div class="alert alert-danger mb-1 py-1">{{ message }}</div>     
+                                <div class="alert alert-danger mb-1 py-1">{{ message }}</div>
                             {% endfor %}
                         {% endif %}
                     </div>
@@ -37,6 +37,18 @@
                         <input type="password" class="form-control" name="password2" id="password2" maxlength="128" required />
                         <label for="password2">Repita a Senha</label>
                     </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="0" name="level" id="level_admin">
+                        <label class="form-check-label" for="level_admin">
+                            administrador
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="1" name="level" id="level_operador" checked>
+                        <label class="form-check-label" for="level_operador">
+                            operador
+                        </label>
+                    </div>
 
                     <div class="row mt-4">
                         <div class="col">
@@ -48,9 +60,9 @@
                             <a href="{% url 'base:list_user' %}" class="w-100 btn btn-lg btn-danger">
                                 Cancelar
                             </a>
-                        </div> 
+                        </div>
                     </div>
-                    
+
                 </form>
             </div>
         </div>

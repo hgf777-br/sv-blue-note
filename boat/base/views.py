@@ -11,7 +11,7 @@ from django.utils.html import escape
 def home(request):
     if request.user.is_authenticated:
         return redirect('manutencao:realizado')
-    else:    
+    else:
         return redirect('base:login')
 
 @login_required
@@ -20,7 +20,7 @@ def list_user(request):
     return render(request, 'authenticate/list_user.html', {
         'users': users,
     })
-    
+
 def login_user(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -47,11 +47,12 @@ def register_user(request):
         email = escape(request.POST['email'])
         password1 = escape(request.POST['password1'])
         password2 = escape(request.POST['password2'])
+        level = escape(request.POST['level'])
         if validate_user_email(email) and password1 == password2:
-            user = User(first_name=first_name, email=email, password=password1)
+            user = User(first_name=first_name, email=email, password=password1, level=level)
             user.set_password(password1)
             user.save()
-            next_page = request.GET.get('next', reverse('base:home'))
+            next_page = request.GET.get('next', reverse('base:list_user'))
             return redirect(next_page)
         else:
             if not validate_user_email(email):
@@ -63,10 +64,11 @@ def register_user(request):
                 'email': email,
                 'password1': password1,
                 'password2': password2,
+                'level': level,
             })
 
     return render(request, 'authenticate/register_user.html', {})
-        
+
 def validate_user_email( email ):
     try:
         validate_email( email )
@@ -78,14 +80,14 @@ def validate_user_email( email ):
 def delete_user(request, user_id):
     if request.method == 'POST':
         user_del = User.objects.get(id=user_id)
-        if request.user.id == user_id:    
+        if request.user.id == user_id:
             messages.error(request, 'Não é possível excluir o usuário logado no sistema')
             return redirect('base:list_user')
         else:
             user_del.delete()
             messages.success(request, f'Usuário { user_del.first_name } foi excluído do sistema')
             return redirect('base:list_user')
-            
+
     user_del = User.objects.get(id=user_id)
     return render(request, 'authenticate/delete_user.html', {
         'user_del': user_del,
@@ -109,8 +111,8 @@ def edit_user(request, user_id):
                 'first_name': first_name,
                 'email': email,
             })
-    
-    user_edit = User.objects.get(id=user_id)
+
+    user = User.objects.get(id=user_id)
     return render(request, 'authenticate/edit_user.html', {
-        'user_edit': user_edit,
+        'user': user,
     })
