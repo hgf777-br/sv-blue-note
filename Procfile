@@ -1,1 +1,1 @@
-web: gunicorn boat.wsgi
+web: python manage.py migrate && gunicorn boat.wsgi
